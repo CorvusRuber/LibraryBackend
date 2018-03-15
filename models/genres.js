@@ -1,10 +1,11 @@
+
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var PublisherSchema = new Schema({
-  nome: String,
+var GenreSchema = new Schema({
+  titolo: String,
   descrizione: String,
   img: { data: Buffer, contentType: String },
 });
 
-module.exports = mongoose.model('publisher', PublisherSchema);
+module.exports = mongoose.model('genre', GenreSchema);

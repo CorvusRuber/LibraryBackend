@@ -10,7 +10,8 @@ var BookSchema = new Schema({
   anno: Number,
   editore: [publisher],
   descrizione: String,
-  cover: String,
+  img: { data: Buffer, contentType: String },
+  isbn: String,
 });
 
-module.exports = mongoose.model('library', BookSchema);
+module.exports = mongoose.model('book', BookSchema);

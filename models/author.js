@@ -4,10 +4,10 @@ var Schema = mongoose.Schema;
 var AuthorSchema = new Schema({
   nome: String,
   cognome: String,
-  nato: Number,
-  morto: Number,
+  nato: String,
+  morto: String,
   descrizione: String,
-  img: String,
+  img: { data: Buffer, contentType: String },
 });
 
 module.exports = mongoose.model('author', AuthorSchema);

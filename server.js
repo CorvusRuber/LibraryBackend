@@ -38,6 +38,7 @@ mongoose.connection.on('open', function () {
 var Author = require('./models/author');
 var Publisher = require('./models/publisher');
 var Book = require('./models/book');
+var Genre = require('./models/genres');
 
 var allowCrossDomain = function (req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
@@ -84,7 +85,6 @@ router.get('/collections', function (req, res) {
       var response = new Array();
       names.forEach(function (e, i, a) {
         // mongoose.connection.db.dropCollection(e.name);
-        console.log("Collection--->>", e.name);
         if (e.name && e.name != "startup_log" && e.name != "system.users") {
           response.push(e);
         }
@@ -150,6 +150,59 @@ router.route('/authors')
       res.json(authors);
     });
   });
+
+
+// EDITORI
+router.route('/publishers')
+  .post(function (req, res) {
+    var publisher = new Publisher();
+    publisher.nome = req.body.nome;
+    // save the bear and check for errors
+    publisher.save(function (err) {
+      if (err) {
+        res.send(err);
+      }
+      res.json({ message: 'Author created!' });
+    });
+  })
+  .get(function (req, res) {
+    Publisher.find({}, null, {
+      sort: { nome: 1 },
+    }, function (err, publishers) {
+      if (err) {
+        res.send(err);
+      }
+      console.dir(publishers);
+      res.json(publishers);
+    });
+  });
+
+// GENERI
+router.route('/genres')
+  .post(function (req, res) {
+    var genre = new Genre();
+    genre.titolo = req.body.titolo;
+    genre.descrizione = req.body.descrizione;
+    genre.img = req.body.img;
+    // save the bear and check for errors
+    genre.save(function (err) {
+      if (err) {
+        res.send(err);
+      }
+      res.json({ message: 'Author created!' });
+    });
+  })
+  .get(function (req, res) {
+    Genre.find({}, null, {
+      sort: { nome: 1, nato: 1 },
+    }, function (err, authors) {
+      if (err) {
+        res.send(err);
+      }
+      res.json(authors);
+    });
+  });
+
 
 // more routes for our API will happen here
 
