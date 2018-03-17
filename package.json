@@ -5,7 +5,8 @@
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "babel-node index.js --presets es2015,stage-2"
+        "startBabel": "babel-node index.js --presets es2015,stage-2",
+        "start": "nodemon server.js"
     },
     "dependencies": {
         "body-parser": "^1.18.2",

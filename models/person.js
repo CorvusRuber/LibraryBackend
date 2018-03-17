@@ -1,14 +1,16 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
+var type = require('./type').schema;
 
-var AuthorSchema = new Schema({
+var PersonSchema = new Schema({
   nome: String,
   cognome: String,
   nato: String,
   morto: String,
   descrizione: String,
   img: { data: Buffer, contentType: String },
+  tipo: [type],
 });
 
-module.exports = mongoose.model('author', AuthorSchema);
+module.exports = mongoose.model('person', PersonSchema);
 

@@ -5,7 +5,8 @@
 var express = require('express'); // call express
 var app = express(); // define our app using express
 var bodyParser = require('body-parser');
-var cors = require('cors')
+var cors = require('cors');
+var fs = require('fs');
 
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://mongoAdmin:leviathan@localhost:27017/local?authSource=admin');
@@ -35,10 +36,11 @@ mongoose.connection.on('open', function () {
     }
   });
 });
-var Author = require('./models/author');
+var Person = require('./models/person');
 var Publisher = require('./models/publisher');
 var Book = require('./models/book');
 var Genre = require('./models/genres');
+var Group = require('./models/group');
 
 var allowCrossDomain = function (req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
@@ -68,7 +70,7 @@ var router = express.Router(); // get an instance of the express Router
 // middleware to use for all requests
 router.use(function (req, res, next) {
   // do logging
-  console.log('Something is happening.');
+  console.log('Something is happening on ' + req.url);
   next(); // make sure we go to the next routes and don't stop here
 });
 
@@ -103,7 +105,8 @@ router.route('/books')
     book.anno = req.body.anno;
     book.descrizione = req.body.descrizione;
     book.editore = req.body.editore;
-    book.cover = req.body.cover;
+    book.img.data = new Buffer(fs.readFileSync(req.body.img), "binary").toString('base64');
+    book.img.contentType = 'image/' + req.body.img.substring(req.body.img.indexOf('.') + 1);
     // save the bear and check for errors
     book.save(function (err) {
       if (err) {
@@ -122,26 +125,27 @@ router.route('/books')
       res.json(books);
     });
   });
-// AUTORI
-router.route('/authors')
+// PERSONE
+router.route('/persons')
   .post(function (req, res) {
-    var author = new Author();
-    author.nome = req.body.nome;
-    author.cognome = req.body.cognome;
-    author.nato = req.body.nato;
-    author.morto = req.body.morto;
-    author.descrizione = req.body.descrizione;
-    author.img = req.body.img;
+    var person = new Person();
+    person.nome = req.body.nome;
+    person.cognome = req.body.cognome;
+    person.nato = req.body.nato;
+    person.morto = req.body.morto;
+    person.descrizione = req.body.descrizione;
+    person.img = req.body.img;
+    person.tipo = req.body.tipo;
     // save the bear and check for errors
-    author.save(function (err) {
+    person.save(function (err) {
       if (err) {
         res.send(err);
       }
-      res.json({ message: 'Author created!' });
+      res.json({ message: 'Person created!' });
     });
   })
   .get(function (req, res) {
-    Author.find({}, null, {
+    Person.find({}, null, {
       sort: { nome: 1, nato: 1 },
     }, function (err, authors) {
       if (err) {
@@ -150,13 +154,15 @@ router.route('/authors')
       res.json(authors);
     });
   });
-
+// GRUPPO
 
 // EDITORI
 router.route('/publishers')
   .post(function (req, res) {
     var publisher = new Publisher();
     publisher.nome = req.body.nome;
+    publisher.descrizione = req.body.descrizione;
+    publisher.tipo = req.body.tipo;
     // save the bear and check for errors
     publisher.save(function (err) {
       if (err) {
@@ -179,6 +185,33 @@ router.route('/publishers')
 
 // GENERI
 router.route('/genres')
+  .post(function (req, res) {
+    var genre = new Genre();
+    genre.titolo = req.body.titolo;
+    genre.descrizione = req.body.descrizione;
+    genre.img = req.body.img;
+    // save the bear and check for errors
+    genre.save(function (err) {
+      if (err) {
+        res.send(err);
+      }
+      res.json({ message: 'Author created!' });
+    });
+  })
+  .get(function (req, res) {
+    Genre.find({}, null, {
+      sort: { nome: 1, nato: 1 },
+    }, function (err, authors) {
+      if (err) {
+        res.send(err);
+      }
+      res.json(authors);
+    });
+  });
+
+
+// Custom search
+router.route('/find')
   .post(function (req, res) {
     var genre = new Genre();
     genre.titolo = req.body.titolo;
