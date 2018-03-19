@@ -1,5 +1,5 @@
 Arguments: 
-  /home/corvus/.nvm/versions/node/v8.10.0/bin/node /usr/share/yarn/bin/yarn.js update
+  /home/corvus/.nvm/versions/node/v8.10.0/bin/node /usr/share/yarn/bin/yarn.js star
 
 PATH: 
   /home/corvus/.npm-packages/bin:/home/corvus/MongoDb/bin:/home/corvus/.nvm/versions/node/v8.10.0/bin:/home/corvus/.npm-packages/bin:/home/corvus/MongoDb/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/lib/jvm/java-8-oracle/bin:/usr/lib/jvm/java-8-oracle/db/bin:/usr/lib/jvm/java-8-oracle/jre/bin:/usr/lib/jvm/java-8-oracle/bin:/usr/lib/jvm/java-8-oracle/db/bin:/usr/lib/jvm/java-8-oracle/jre/bin:/home/corvus/gobin:/home/corvus/gobin
@@ -1520,8 +1520,8 @@ Lockfile:
     resolved "https://registry.npmjs.org/ms/-/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"
   
   nan@^2.3.0:
-    version "2.9.2"
-    resolved "https://registry.npmjs.org/nan/-/nan-2.9.2.tgz#f564d75f5f8f36a6d9456cca7a6c4fe488ab7866"
+    version "2.10.0"
+    resolved "https://registry.npmjs.org/nan/-/nan-2.10.0.tgz#96d0cd610ebd58d4b4de9cc0c6828cda99c7548f"
   
   negotiator@0.6.1:
     version "0.6.1"
@@ -2073,7 +2073,7 @@ Lockfile:
     resolved "https://registry.npmjs.org/wrappy/-/wrappy-1.0.2.tgz#b5243d8f3ec1aa35f1364605bc0d1036e30ab69f"
 
 Trace: 
-  Error: Command "update" not found.
+  Error: Command "star" not found. Did you mean "start"?
       at new MessageError (/usr/share/yarn/lib/cli.js:186:110)
       at /usr/share/yarn/lib/cli.js:87307:17
       at Generator.next (<anonymous>)

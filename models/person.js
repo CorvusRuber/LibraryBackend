@@ -11,6 +11,4 @@ var PersonSchema = new Schema({
   img: { data: Buffer, contentType: String },
   tipo: [type],
 });
-
 module.exports = mongoose.model('person', PersonSchema);
-

@@ -42,6 +42,20 @@ var Book = require('./models/book');
 var Genre = require('./models/genres');
 var Group = require('./models/group');
 
+
+var defaultCollections = [
+  { name: "people" },
+  { name: "books" },
+  { name: "publishers" },
+  { name: "genres" },
+  { name: "albums" },
+  { name: "episodes" },
+  { name: "groups" },
+  { name: "seasons" },
+  { name: "series" },
+  { name: "types" },
+];
+
 var allowCrossDomain = function (req, res, next) {
   res.header('Access-Control-Allow-Origin', '*');
   res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS');
@@ -84,13 +98,23 @@ router.get('/collections', function (req, res) {
     if (err) {
       console.log(err);
     } else {
+      var entro = ((names && names.length > 0));
       var response = new Array();
-      names.forEach(function (e, i, a) {
+      if (names && names.length > 0) {
+        names.forEach(function (e, i, a) {
         // mongoose.connection.db.dropCollection(e.name);
-        if (e.name && e.name != "startup_log" && e.name != "system.users") {
-          response.push(e);
-        }
-      });
+          if (e.name && e.name != "startup_log" && e.name != "system.users") {
+            response.push(e);
+          } else {
+            defaultCollections.forEach((element) => {
+              response.indexOf(element) === -1 ? response.push(element) : console.log("Already there");
+            })
+          }
+        });
+      } else {
+        console.log("DB VUOTO!!!");
+      }
+      response.push({ "name": "ricerca" });
       res.json(response);
     }
   });
@@ -126,16 +150,22 @@ router.route('/books')
     });
   });
 // PERSONE
-router.route('/persons')
+router.route('/people')
   .post(function (req, res) {
+    console.dir(req);
     var person = new Person();
     person.nome = req.body.nome;
     person.cognome = req.body.cognome;
     person.nato = req.body.nato;
     person.morto = req.body.morto;
     person.descrizione = req.body.descrizione;
-    person.img = req.body.img;
-    person.tipo = req.body.tipo;
+    if (req.body.img) {
+      person.img.data = new Buffer(fs.readFileSync(req.body.img), "binary").toString('base64');
+      person.img.contentType = 'image/' + req.body.img.substring(req.body.img.indexOf('.') + 1);
+    }
+    if (req.body.tipo) {
+      person.tipo = req.body.tipo;
+    }
     // save the bear and check for errors
     person.save(function (err) {
       if (err) {
@@ -144,16 +174,64 @@ router.route('/persons')
       res.json({ message: 'Person created!' });
     });
   })
-  .get(function (req, res) {
-    Person.find({}, null, {
-      sort: { nome: 1, nato: 1 },
-    }, function (err, authors) {
+  .delete(function (req, res) {
+    console.dir(req.query.id);
+    Person.remove({
+      _id: req.query.id,
+    }, function (err, person) {
       if (err) {
         res.send(err);
       }
-      res.json(authors);
+      res.json({ message: 'Person removed from the Book of Toth' });
+    });
+  })
+  .get(function (req, res) {
+    Person.find({}, null, {
+      sort: { cognome: 1, nome: 1, nato: 1 },
+    }, function (err, persons) {
+      if (err) {
+        res.send(err);
+      }
+      res.json(persons);
     });
   });
+router.route('/people/:id')
+  .post(function (req, res) {
+    console.dir(req);
+    var person = new Person();
+    person.nome = req.body.nome;
+    person.cognome = req.body.cognome;
+    person.nato = req.body.nato;
+    person.morto = req.body.morto;
+    person.descrizione = req.body.descrizione;
+    if (req.body.img) {
+      person.img.data = new Buffer(fs.readFileSync(req.body.img), "binary").toString('base64');
+      person.img.contentType = 'image/' + req.body.img.substring(req.body.img.indexOf('.') + 1);
+    }
+    if (req.body.tipo) {
+      person.tipo = req.body.tipo;
+    }
+    // save the bear and check for errors
+    person.save(function (err) {
+      if (err) {
+        res.send(err);
+      }
+      res.json({ message: 'Person created!' });
+    });
+  })
+  .delete(function (req, res) {
+    console.dir(req.params);
+    Person.remove({
+      _id: req.params.id,
+    }, function (err, person) {
+      if (err) {
+        res.send(err);
+      }
+      res.json({ message: 'Person removed from the Book of Toth' });
+    });
+  });
+
+
 // GRUPPO
 
 // EDITORI
