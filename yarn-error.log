@@ -1,8 +1,8 @@
 Arguments: 
-  /home/corvus/.nvm/versions/node/v8.10.0/bin/node /usr/share/yarn/bin/yarn.js star
+  /home/corvus/.nvm/versions/node/v8.10.0/bin/node /usr/bin/yarn upgrade
 
 PATH: 
-  /home/corvus/.npm-packages/bin:/home/corvus/MongoDb/bin:/home/corvus/.nvm/versions/node/v8.10.0/bin:/home/corvus/.npm-packages/bin:/home/corvus/MongoDb/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin:/usr/lib/jvm/java-8-oracle/bin:/usr/lib/jvm/java-8-oracle/db/bin:/usr/lib/jvm/java-8-oracle/jre/bin:/usr/lib/jvm/java-8-oracle/bin:/usr/lib/jvm/java-8-oracle/db/bin:/usr/lib/jvm/java-8-oracle/jre/bin:/home/corvus/gobin:/home/corvus/gobin
+  /home/corvus/.npm-packages/bin:/home/corvus/MongoDb/bin:/home/corvus/.nvm/versions/node/v8.10.0/bin:/home/corvus/.npm-packages/bin:/home/corvus/MongoDb/bin:/sbin:/bin:/usr/sbin:/usr/bin:/usr/local/bin:/snap/bin:/home/corvus/gobin:/home/corvus/gobin
 
 Yarn version: 
   1.5.1
@@ -825,8 +825,8 @@ Lockfile:
       delayed-stream "~1.0.0"
   
   commander@^2.11.0:
-    version "2.15.0"
-    resolved "https://registry.npmjs.org/commander/-/commander-2.15.0.tgz#ad2a23a1c3b036e392469b8012cec6b33b4c1322"
+    version "2.15.1"
+    resolved "https://registry.npmjs.org/commander/-/commander-2.15.1.tgz#df46e867d0fc2aec66a34662b406a9ccafff5b0f"
   
   concat-map@0.0.1:
     version "0.0.1"
@@ -1487,8 +1487,8 @@ Lockfile:
     resolved "https://registry.npmjs.org/mongoose-legacy-pluralize/-/mongoose-legacy-pluralize-1.0.2.tgz#3ba9f91fa507b5186d399fb40854bff18fb563e4"
   
   mongoose@^5.0.10:
-    version "5.0.10"
-    resolved "https://registry.npmjs.org/mongoose/-/mongoose-5.0.10.tgz#5945b4acc137b1c6acf546d64da1070bc4c4965a"
+    version "5.0.11"
+    resolved "https://registry.npmjs.org/mongoose/-/mongoose-5.0.11.tgz#bb31a98591cd2377312ded28155281110a9e1da0"
     dependencies:
       async "2.1.4"
       bson "~1.0.4"
@@ -2073,14 +2073,7 @@ Lockfile:
     resolved "https://registry.npmjs.org/wrappy/-/wrappy-1.0.2.tgz#b5243d8f3ec1aa35f1364605bc0d1036e30ab69f"
 
 Trace: 
-  Error: Command "star" not found. Did you mean "start"?
-      at new MessageError (/usr/share/yarn/lib/cli.js:186:110)
-      at /usr/share/yarn/lib/cli.js:87307:17
-      at Generator.next (<anonymous>)
-      at step (/usr/share/yarn/lib/cli.js:98:30)
-      at /usr/share/yarn/lib/cli.js:116:14
-      at new Promise (<anonymous>)
-      at new F (/usr/share/yarn/lib/cli.js:23451:28)
-      at /usr/share/yarn/lib/cli.js:95:12
-      at runCommand (/usr/share/yarn/lib/cli.js:87312:22)
-      at Object.<anonymous> (/usr/share/yarn/lib/cli.js:87412:14)
+  Error: connect ECONNREFUSED 151.101.112.162:443
+      at Object._errnoException (util.js:1022:11)
+      at _exceptionWithHostPort (util.js:1044:20)
+      at TCPConnectWrap.afterConnect [as oncomplete] (net.js:1198:14)
