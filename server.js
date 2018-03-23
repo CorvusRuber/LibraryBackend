@@ -22,26 +22,6 @@ var db = mongoose.connection;
 //     });
 // })
 
-mongoose.connection.on('error', console.error.bind(console, 'connection error:'));
-mongoose.connection.on('open', function() {
-    console.log("Connection established !!!");
-    mongoose.connection.db.listCollections().toArray(function(err, names) {
-        if (err) {
-            console.log(err);
-        } else {
-            names.forEach(function(e, i, a) {
-                // mongoose.connection.db.dropCollection(e.name);
-                console.log("Collection--->>", e.name);
-            });
-        }
-    });
-});
-var Person = require('./models/person');
-var Publisher = require('./models/publisher');
-var Book = require('./models/book');
-var Genre = require('./models/genres');
-var Group = require('./models/group');
-
 
 var defaultCollections = [{
         name: "people"
@@ -74,6 +54,36 @@ var defaultCollections = [{
         name: "types"
     },
 ];
+
+mongoose.connection.on('error', console.error.bind(console, 'connection error:'));
+mongoose.connection.on('open', function() {
+    console.log("Connection established !!!");
+    mongoose.connection.db.listCollections().toArray(function(err, names) {
+        if (err) {
+            console.log(err);
+        } else {
+
+            defaultCollections.forEach(function(e, i, a) {
+                // mongoose.connection.db.dropCollection(e.name);
+                console.log("Collection--->>", e.name);
+                var found = names.find(item => item.name === e.name);
+                if (found) {
+                    console.log(found.name + " già presente");
+                } else {
+                    console.log("Creazione " + e.name);
+                    mongoose.connection.db.createCollection(e.name, (err) => {});
+                }
+            });
+        }
+    });
+});
+var Person = require('./models/person');
+var Publisher = require('./models/publisher');
+var Book = require('./models/book');
+var Genre = require('./models/genres');
+var Group = require('./models/group');
+
+
 
 var allowCrossDomain = function(req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
@@ -122,23 +132,24 @@ router.get('/collections', function(req, res) {
             console.log(err);
         } else {
             var entro = ((names && names.length > 0));
-            var response = new Array();
+            var response = [];
             if (names && names.length > 0) {
                 names.forEach(function(e, i, a) {
                     // mongoose.connection.db.dropCollection(e.name);
                     if (e.name && e.name != "startup_log" && e.name != "system.users") {
                         response.push(e);
-                    } else {
-                        defaultCollections.forEach(element => {
-                            //response.indexOf(element) === -1 ? response.push(element) : console.log("Already there");
-                            if (response.find(item => item.name === element.name)) {
-                                console.log(element.name + " already there");
-                            } else {
-                                console.log("Adding " + element.name);
-                                response.push(element);
-                            }
-                        })
                     }
+                    // else {
+                    //     defaultCollections.forEach(element => {
+                    //         //response.indexOf(element) === -1 ? response.push(element) : console.log("Already there");
+                    //         if (response.find(item => item.name === element.name)) {
+                    //             console.log(element.name + " already there");
+                    //         } else {
+                    //             console.log("Adding " + element.name);
+                    //             response.push(element);
+                    //         }
+                    //     });
+                    // }
                 });
             } else {
                 console.log("DB VUOTO!!!");
@@ -146,11 +157,14 @@ router.get('/collections', function(req, res) {
             response.push({
                 "name": "ricerca"
             });
-            res.json(response);
+            res.json(response.sort({
+                name: -1
+            }));
         }
     });
     // res.json(db.listCollections());
 });
+
 // LIBRI
 router.route('/books')
     .post(function(req, res) {
