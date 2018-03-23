@@ -164,7 +164,6 @@ router.get('/collections', function(req, res) {
     });
     // res.json(db.listCollections());
 });
-
 // LIBRI
 router.route('/books')
     .post(function(req, res) {
